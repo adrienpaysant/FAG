@@ -51,7 +51,7 @@
 		#conteneur {width:100%; margin:0 auto;}
 		#header {background-color: #FFD700;width:100%;}
 		#footer {background-color: #FFD700;width:100%;}
-		#sidebar {position:absolute;background-color: #C7C7C7;width:230px;}
+		#sidebar {position:absolute;background-color: #C7C7C7;width:230px;display: flex;flex-direction: column;justify-content: flex-start;}
 		#contenu {margin-left:230px;}
 		#mapid { height: 800px; }
 
@@ -170,7 +170,7 @@
 
 	//FAG Variables
 	var distanceRange=500;
-		
+	var freqRange=16;
 
 	//END FAG Variables
 
@@ -1485,16 +1485,49 @@
 			return 20 * Math.log10(0.225 / v);
 		}
 	}
-	
+		//google.maps.event.addDomListener(window, 'load', initialize);
+
+
 	//FAG FUNCTIONS
 	function updateDistanceRange(){
 		var slider = document.getElementById("distanceRange");
 		distanceRange=slider.value;
-		document.getElementById("distanceRangeLabel").textContent=slider.value;
-		console.info(distanceRange);
+		document.getElementById("distanceInput").value=distanceRange;
+		//DEBUG
+		//console.info(distanceRange);
 	}
-	
-	//google.maps.event.addDomListener(window, 'load', initialize);
+	function updateDistanceInput(){
+		var ip = document.getElementById("distanceInput");
+		distanceRange=ip.value;
+		document.getElementById("distanceRange").value=distanceRange;
+	}
+
+	function updateFreqRangeSlider(){
+		var slider = document.getElementById("freqRange");
+		freqRange=slider.value;
+		document.getElementById("freqInput").value=freqRange;
+	}
+	function updateFreqInput(){
+		var ip = document.getElementById("freqInput");
+		freqRange=ip.value;
+		max=document.getElementById("freqInput").max;
+		min=document.getElementById("freqInput").min;
+		
+		console.info("freq: "+freqRange);
+		console.info("min: "+min);
+		console.info("max: "+max);
+		if(freqRange>max){
+			freqRange=max;
+		}
+		else if(freqRange<min){
+			freqRange=min;
+		}
+		
+		document.getElementById("freqRange").value=freqRange;
+		document.getElementById("freqInput").value=freqRange;
+		
+		console.info(freqRange);
+	}
 
 	</script>
 </head>
@@ -1505,6 +1538,30 @@
 		</div>
 		<div id="sidebar">
 			<div><label id="labeltech">Radio technogy: </label></div>
+			
+		  <!--  FAG SETTINGS -->
+		  <div id="fag" style="display: flex;flex-direction: column;border: 5px inset #777467;
+		  background: #c3c6d8;padding: 1em;text-align: center; font-style: italic;">
+			  	<label >FAG Project</label>
+				<label>Distance of interferences :</label>
+					<div style="display: flex;flex-direction: row;">
+						<input type="number" id="distanceInput" max="5000" min="1" value="500"  oninput="updateDistanceInput()">
+						<label id="distanceRangeLabel" style="font-weight: bold;font-style: normal;"> meters</label>
+					</div>
+					<input type="range" min="1" max="5000" value="500"  id="distanceRange" oninput="updateDistanceRange()">
+					<!--DO not change base value or change on the var to in js.-->
+
+				<label>Number of frequencies :</label>
+					<div style="display: flex;flex-direction: row;">
+						<input type="number"  id="freqInput" max="100" min="1" value="16" oninput="updateFreqInput()">
+						<label id="freqRangeLabel" style="font-weight: bold;font-style: normal;"> frequencies</label>
+					</div>
+					<input type="range" min="1" max="100" value="16"  id="freqRange"  oninput="updateFreqRangeSlider()">
+					<!--DO not change base value or change on the var to in js.-->
+		  </div>
+		  <!--END OF FAG SETTINGS-->
+
+
 			<select name="Combobox1" size="1" id="techno" style="width: 98%;">
 				<option selected value="1">GSM</option>
 				<option value="2">UMTS</option>
@@ -1556,15 +1613,6 @@
 				<div> <input type="number" id="frequency4" name="frequency4" style="width: 98%;"></div>
 		  </div>
 
-		  <div id="fag" style="display: flex;flex-direction: column;border: 5px inset #777467;
-		  background: #c3c6d8;">
-			  <hr>
-				<label>Distance of interferences</label>
-					<label id="distanceRangeLabel">500</label>
-					<input type="range" min="1" max="5000" step="100" value="500"  id="distanceRange" onchange="updateDistanceRange()">
-					<!--DO not change base value or change on the var to in js.-->
-				<label>Number of frequencies</label>
-		  </div>
 		</div>
 		<div id="contenu">
 			
