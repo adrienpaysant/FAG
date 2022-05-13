@@ -1489,45 +1489,48 @@
 
 
 	//FAG FUNCTIONS
-	function updateDistanceRange(){
-		var slider = document.getElementById("distanceRange");
-		distanceRange=slider.value;
-		document.getElementById("distanceInput").value=distanceRange;
-		//DEBUG
-		//console.info(distanceRange);
-	}
-	function updateDistanceInput(){
-		var ip = document.getElementById("distanceInput");
-		distanceRange=ip.value;
-		document.getElementById("distanceRange").value=distanceRange;
-	}
 
-	function updateFreqRangeSlider(){
-		var slider = document.getElementById("freqRange");
-		freqRange=slider.value;
-		document.getElementById("freqInput").value=freqRange;
-	}
-	function updateFreqInput(){
-		var ip = document.getElementById("freqInput");
-		freqRange=ip.value;
-		max=document.getElementById("freqInput").max;
-		min=document.getElementById("freqInput").min;
-		
-		console.info("freq: "+freqRange);
-		console.info("min: "+min);
-		console.info("max: "+max);
-		if(freqRange>max){
-			freqRange=max;
-		}
-		else if(freqRange<min){
-			freqRange=min;
-		}
-		
-		document.getElementById("freqRange").value=freqRange;
-		document.getElementById("freqInput").value=freqRange;
-		
-		console.info(freqRange);
-	}
+		//SETTINGS
+			function updateDistanceRange(){
+				var slider = document.getElementById("distanceRange");
+				distanceRange=slider.value;
+				document.getElementById("distanceInput").value=distanceRange;
+			}
+			function updateDistanceInput(){
+				var ip = document.getElementById("distanceInput");
+				distanceRange=ip.value;
+				max=document.getElementById("distanceInput").max;
+				min=document.getElementById("distanceInput").min;
+				if(distanceRange>max){
+					distanceRange=max;
+				}
+				else if(distanceRange<min){
+					distanceRange=min;
+				}
+				document.getElementById("distanceRange").value=distanceRange;
+				document.getElementById("distanceInput").value=distanceRange;
+			}
+			function updateFreqRangeSlider(){
+				var slider = document.getElementById("freqRange");
+				freqRange=slider.value;
+				document.getElementById("freqInput").value=freqRange;
+			}
+			function updateFreqInput(){
+				var ip = document.getElementById("freqInput");
+				freqRange=ip.value;
+				max=document.getElementById("freqInput").max;
+				min=document.getElementById("freqInput").min;
+				if(freqRange>max){
+					freqRange=max;
+				}
+				else if(freqRange<min){
+					freqRange=min;
+				}
+				document.getElementById("freqRange").value=freqRange;
+				document.getElementById("freqInput").value=freqRange;
+			}
+
+		//OTHERS
 
 	</script>
 </head>
