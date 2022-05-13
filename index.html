@@ -51,7 +51,7 @@
 		#conteneur {width:100%; margin:0 auto;}
 		#header {background-color: #FFD700;width:100%;}
 		#footer {background-color: #FFD700;width:100%;}
-		#sidebar {position:absolute;background-color: #C7C7C7;width:230px;}
+		#sidebar {position:absolute;background-color: #C7C7C7;width:230px;display: flex;flex-direction: column;justify-content: flex-start;}
 		#contenu {margin-left:230px;}
 		#mapid { height: 800px; }
 
@@ -167,7 +167,13 @@
 	var circle;
  	var colors=[];
 	var start;
-		
+
+	//FAG Variables
+	var distanceRange=500;
+	var freqRange=16;
+
+	//END FAG Variables
+
 	//action after the selection of the south-east corner of the covering area
 	function placeCorner(location) {
 		southCorner=location;
@@ -1479,10 +1485,52 @@
 			return 20 * Math.log10(0.225 / v);
 		}
 	}
-	
-	
-	
-	//google.maps.event.addDomListener(window, 'load', initialize);
+		//google.maps.event.addDomListener(window, 'load', initialize);
+
+
+	//FAG FUNCTIONS
+
+		//SETTINGS
+			function updateDistanceRange(){
+				var slider = document.getElementById("distanceRange");
+				distanceRange=slider.value;
+				document.getElementById("distanceInput").value=distanceRange;
+			}
+			function updateDistanceInput(){
+				var ip = document.getElementById("distanceInput");
+				distanceRange=ip.value;
+				max=document.getElementById("distanceInput").max;
+				min=document.getElementById("distanceInput").min;
+				if(distanceRange>max){
+					distanceRange=max;
+				}
+				else if(distanceRange<min){
+					distanceRange=min;
+				}
+				document.getElementById("distanceRange").value=distanceRange;
+				document.getElementById("distanceInput").value=distanceRange;
+			}
+			function updateFreqRangeSlider(){
+				var slider = document.getElementById("freqRange");
+				freqRange=slider.value;
+				document.getElementById("freqInput").value=freqRange;
+			}
+			function updateFreqInput(){
+				var ip = document.getElementById("freqInput");
+				freqRange=ip.value;
+				max=document.getElementById("freqInput").max;
+				min=document.getElementById("freqInput").min;
+				if(freqRange>max){
+					freqRange=max;
+				}
+				else if(freqRange<min){
+					freqRange=min;
+				}
+				document.getElementById("freqRange").value=freqRange;
+				document.getElementById("freqInput").value=freqRange;
+			}
+
+		//OTHERS
 
 	</script>
 </head>
@@ -1493,6 +1541,30 @@
 		</div>
 		<div id="sidebar">
 			<div><label id="labeltech">Radio technogy: </label></div>
+			
+		  <!--  FAG SETTINGS -->
+		  <div id="fag" style="display: flex;flex-direction: column;border: 5px inset #777467;
+		  background: #c3c6d8;padding: 1em;text-align: center; font-style: italic;">
+			  	<label >FAG Project</label>
+				<label>Distance of interferences :</label>
+					<div style="display: flex;flex-direction: row;">
+						<input type="number" id="distanceInput" max="5000" min="1" value="500"  oninput="updateDistanceInput()">
+						<label id="distanceRangeLabel" style="font-weight: bold;font-style: normal;"> meters</label>
+					</div>
+					<input type="range" min="1" max="5000" value="500"  id="distanceRange" oninput="updateDistanceRange()">
+					<!--DO not change base value or change on the var to in js.-->
+
+				<label>Number of frequencies :</label>
+					<div style="display: flex;flex-direction: row;">
+						<input type="number"  id="freqInput" max="100" min="1" value="16" oninput="updateFreqInput()">
+						<label id="freqRangeLabel" style="font-weight: bold;font-style: normal;"> frequencies</label>
+					</div>
+					<input type="range" min="1" max="100" value="16"  id="freqRange"  oninput="updateFreqRangeSlider()">
+					<!--DO not change base value or change on the var to in js.-->
+		  </div>
+		  <!--END OF FAG SETTINGS-->
+
+
 			<select name="Combobox1" size="1" id="techno" style="width: 98%;">
 				<option selected value="1">GSM</option>
 				<option value="2">UMTS</option>
@@ -1543,6 +1615,7 @@
 				<div><label id="freq1">Fréquence 4 : </label></div>
 				<div> <input type="number" id="frequency4" name="frequency4" style="width: 98%;"></div>
 		  </div>
+
 		</div>
 		<div id="contenu">
 			
@@ -1561,6 +1634,7 @@
 		  <button type="button" id="antenne" value="Add an antenna" onclick="addAntennaConstructor()" disabled='disabled'><img src="antenna.png"> </button>
 		  <button type="button" id="ecole" value="Add a critical zone " onclick="addEcole()" disabled='disabled'><img src="ecole.png"> </button>
 		  <button type="button" id="elevation" value="Elevation computing" onclick="displayElevation()" disabled='disabled'><img src="elevation.png"> </button>
+		  <button type="button" id="freqAssignation" value="FAG" onclick="" disabled='disabled'><img src="fag.png" width="40px"> </button> 
 		  <input type="file" id="fileinput" />
 		  </div>
 		</div>
