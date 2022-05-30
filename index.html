@@ -273,6 +273,7 @@
 			document.getElementById('loadBat').disabled = '';
 			document.getElementById('ecole').disabled = '';
 			document.getElementById('elevation').disabled = '';
+			document.getElementById('freqAssignation').disabled = '';
 			mymap.removeLayer(group1);
 			// Display the deployment area	
 			var zonecontour = L.polygon([
@@ -1530,8 +1531,83 @@
 				document.getElementById("freqInput").value=freqRange;
 			}
 
-		//OTHERS
+		//MAIN FUNCTIONS
+			/**
+	 		* Fonction appelée par l'appuie sur le bouton correspondant a notre projet dans la bar du bas de l'app
+			* permettant le calcul de la meilleur répartition des fréquences disponibles
+	 		*/
+			function execFAG(){
+				//variable local
+				var a
+				//fin variable
+				
+				a = generateTabInterferences();
+				
+				for (i=0;i<nbantennas;i++){
+					for (j=0;j<nbantennas;j++){
+						alert("antenne " + i +" avec antenne " + j + " : " + a[i,j]);
+					}
+				}
+			}
+			
+			/**
+			 * Fonction retournant un tableau à 2 dimension contenant des 1 pour les couples 
+			 * d'antennes qui sont situées à une distance inférieure à celle définie par 
+			 * l'utilisateur
+			 * 
+			 * ex: tab_interference[0,1]
+			 */
+			function generateTabInterferences(){
+				var antenne_1,antenne_2,a1Loc,a2Loc;
 
+				//création du tableau a 2 dimensions
+				var tab_interference = new Array(nbantennas);
+				for ( i=0 ; i<nbantennas ; i++){
+					tab_interference[i] = new Array(nbantennas);
+				}
+				
+				//on test pour chaque couple d'antenne et on place la bonne valeure dans le tableau
+				for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
+					for (antenne_2 = 0; antenne_2 < nbantennas; antenne_2++) {
+						if (distance(antennas[antenne_1].location, antennas[antenne_2].location) < distanceRange) {
+							tab_interference[antenne_1,antenne_2] = 1;
+
+						}
+						else{
+							tab_interference[antenne_1,antenne_2] = 0;
+						}
+						alert(antenne_1 + " <-> " + antenne_2)
+						alert(distance(antennas[antenne_1].location, antennas[antenne_2].location))
+						alert(tab_interference[antenne_1,antenne_2])
+					}
+				}
+				for (i=0;i<nbantennas;i++){
+					for (j=0;j<nbantennas;j++){
+						alert("antenne " + i +" avec antenne " + j + " : " + tab_interference[i,j]);
+					}
+				}
+				return tab_interference;
+			}
+
+			
+
+		//OTHER/Tools
+			/**
+			 * Fonction permettant le calcul de la distance entre deux point en m 
+			 * en se basant sur leurs coordonnées en degré décimal
+			 */
+			function distance(position1,position2){
+				return Math.acos(Math.sin(degreeToRadian(position1.lat))*Math.sin(degreeToRadian(position2.lat))+Math.cos(degreeToRadian(position1.lat))*Math.cos(degreeToRadian(position2.lat))*Math.cos(degreeToRadian(position1.lng)-degreeToRadian(position2.lng)))*6371000;
+			}
+			
+			/**
+			 * Fonction permettant de convertir un angle en degrés en radians
+			 */
+			function degreeToRadian(angleInDeg){
+				return angleInDeg*(Math.PI/180);
+			}
+
+	//END FAG FUNCTIONS		
 	</script>
 </head>
   <body>
@@ -1634,7 +1710,7 @@
 		  <button type="button" id="antenne" value="Add an antenna" onclick="addAntennaConstructor()" disabled='disabled'><img src="antenna.png"> </button>
 		  <button type="button" id="ecole" value="Add a critical zone " onclick="addEcole()" disabled='disabled'><img src="ecole.png"> </button>
 		  <button type="button" id="elevation" value="Elevation computing" onclick="displayElevation()" disabled='disabled'><img src="elevation.png"> </button>
-		  <button type="button" id="freqAssignation" value="FAG" onclick="" disabled='disabled'><img src="fag.png" width="40px"> </button> 
+		  <button type="button" id="freqAssignation" value="FAG" onclick="execFAG()" disabled='disabled'><img src="fag.png" width="40px"> </button> 
 		  <input type="file" id="fileinput" />
 		  </div>
 		</div>
