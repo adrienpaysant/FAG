@@ -1541,13 +1541,10 @@
 				var a
 				//fin variable
 				
+				//get the interferance table
 				a = generateTabInterferences();
 				
-				for (i=0;i<nbantennas;i++){
-					for (j=0;j<nbantennas;j++){
-						alert("antenne " + i +" avec antenne " + j + " : " + a[i,j]);
-					}
-				}
+				
 			}
 			
 			/**
@@ -1558,11 +1555,11 @@
 			 * ex: tab_interference[0,1]
 			 */
 			function generateTabInterferences(){
-				var antenne_1,antenne_2,a1Loc,a2Loc;
+				var antenne_1,antenne_2;
 
 				//création du tableau a 2 dimensions
 				var tab_interference = new Array(nbantennas);
-				for ( i=0 ; i<nbantennas ; i++){
+				for ( var i=0 ; i<nbantennas ; i++){
 					tab_interference[i] = new Array(nbantennas);
 				}
 				
@@ -1570,22 +1567,15 @@
 				for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
 					for (antenne_2 = 0; antenne_2 < nbantennas; antenne_2++) {
 						if (distance(antennas[antenne_1].location, antennas[antenne_2].location) < distanceRange) {
-							tab_interference[antenne_1,antenne_2] = 1;
+							tab_interference[antenne_1][antenne_2] = true;
 
+						}else{
+							tab_interference[antenne_1][antenne_2] = false;
 						}
-						else{
-							tab_interference[antenne_1,antenne_2] = 0;
-						}
-						alert(antenne_1 + " <-> " + antenne_2)
-						alert(distance(antennas[antenne_1].location, antennas[antenne_2].location))
-						alert(tab_interference[antenne_1,antenne_2])
+						//alert(antenne_1 + " <-> " + antenne_2 + " distance = " + distance(antennas[antenne_1].location, antennas[antenne_2].location) +  "m on note : " + tab_interference[antenne_1][antenne_2]);
 					}
 				}
-				for (i=0;i<nbantennas;i++){
-					for (j=0;j<nbantennas;j++){
-						alert("antenne " + i +" avec antenne " + j + " : " + tab_interference[i,j]);
-					}
-				}
+				
 				return tab_interference;
 			}
 
