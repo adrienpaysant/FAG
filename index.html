@@ -1545,6 +1545,8 @@
 				//get the interferance table
 				ifTab = generateTabInterferences();
 				
+				//first randomAssignment
+				randomAssignment();
 				
 			}
 			
@@ -1560,13 +1562,23 @@
 
 			/**
 			*
-			*
-			*
+			*Dummy assignment functions
+			*only rando assignment
 			*
 			*/
 			function randomAssignment(){
-
+				//itérer sur le nombre d'antennes et mettre les fréquences dans le tableau freqTab
+				var antenne_1;
+				for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
+					freqTab.push(Math.floor(Math.random() * freqRange) + 1);
+					//rand*feqRange => from [0;freqRange[ 
+					//floor => from [0;freqRange-1]
+					//+1 => from [1;freqRange]
+				}
+				//console.log(freqTab);
 			}
+
+
 
 			/**
 			 * Fonction retournant un tableau à 2 dimension contenant des 1 pour les couples 
