@@ -1562,8 +1562,8 @@
 
 			/**
 			*
-			*Dummy assignment functions
-			*only rando assignment
+			*Dummy assignment function
+			*only random assignment
 			*
 			*/
 			function randomAssignment(){
@@ -1578,6 +1578,30 @@
 				//console.log(freqTab);
 			}
 
+			/**
+			*
+			*Smart Assignment 
+			*/
+			function smartAssignment(){
+				//assigner les freqs une à une et à chaque fois, vérifier que la fréquence n'est pas en  interférences avec autres
+				var antenne_1;
+				for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
+					var nokFreq=true;
+					while(nokFreq){
+					//TODO Assigner une freq qui est OK
+						//0)choisir une freq
+						var possibleFreq = freqTab.push(Math.floor(Math.random() * freqRange) + 1);
+						//1)Créer un fakerFreqTab pour evaluer avec la fonction d'évaluation
+
+						//2) vérifier que la freq choisie n'est pas NOK
+						
+						//3)
+					//	if(SI FREQS SONT OK ){nokFreq=false;}
+
+
+					}
+				}
+			}
 
 
 			/**
