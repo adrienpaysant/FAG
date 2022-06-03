@@ -28,13 +28,12 @@
 	<script src="jquery-3.6.0.js"></script>
 	<script src="https://npmcdn.com/leaflet-geometryutil"></script>
 	<style>
-		<style>
 		html, body, #map-canvas {
 		height: 100%;
 		margin: 0px;
 		padding: 0px
 		}
-		</style>
+	</style>
 	<style type="text/css">
 		body
 		{
@@ -358,6 +357,10 @@
 				fillOpacity: 1,
 				radius: 2}).addTo(mymap);
 		}
+
+		// TBedez
+		// console.log(antenne);
+
 		antennas.push(antenne);
 		nbantennas++;
 		document.getElementById('message').value = "Choisissez une action !";
@@ -1540,6 +1543,7 @@
 			function execFAG(){
 				//variable local
 				var ifTab;
+				var scoreAntennas;		//tableau contenant le score de chq antenne
 				//fin variable
 				
 				//get the interferance table
@@ -1547,6 +1551,10 @@
 				
 				//first randomAssignment
 				randomAssignment();
+				scoreAntennas = assignementEvaluation(ifTab);
+
+				// console.log(ifTab);
+				// console.log(scoreAntennas);
 				
 			}
 			
@@ -1556,8 +1564,30 @@
 			*
 			*
 			*/
-			function assignementEvaluation(){
-				//TODO 
+			function assignementEvaluation(ifTab){
+				//TODO
+				var indexAntenna;
+				var scoreAntennas = [];
+
+				for (indexAntenna = 0; indexAntenna < nbantennas; indexAntenna++){
+					scoreAntennas.push(singleAntennaEvaluation(ifTab, indexAntenna));
+				}
+
+				return scoreAntennas;
+
+			}
+
+			function singleAntennaEvaluation(ifTab, indexAntenna){
+				
+				var scoreAntenna = 0;
+
+				for (var i = 0; i < nbantennas; i++){
+					if(i != indexAntenna && ifTab[indexAntenna][i] == true){
+						scoreAntenna++;
+					}
+				}
+				
+				return scoreAntenna;
 			}
 
 			/**
