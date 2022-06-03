@@ -1555,10 +1555,15 @@
 				//randomAssignment();
 				//smartAssignment(ifTab);
 				smartAssignment2(ifTab);
-				scoreAntennas = assignementEvaluation(ifTab);
+				scoreAntennas = assignementEvaluation(ifTab, freqTab);
 
 				// console.log(ifTab);
-				// console.log(scoreAntennas);
+
+
+				console.log('tableau des frequences:\n');
+				console.log(freqTab);
+				console.log('tableau des scores:\n');
+				console.log(scoreAntennas);
 				
 			}
 			
@@ -1568,25 +1573,25 @@
 			*
 			*
 			*/
-			function assignementEvaluation(ifTab){
+			function assignementEvaluation(ifTab, internalFreqTab){
 				//TODO
 				var indexAntenna;
 				var scoreAntennas = [];
 
 				for (indexAntenna = 0; indexAntenna < nbantennas; indexAntenna++){
-					scoreAntennas.push(singleAntennaEvaluation(ifTab, indexAntenna));
+					scoreAntennas.push(singleAntennaEvaluation(ifTab, internalFreqTab, indexAntenna));
 				}
 
 				return scoreAntennas;
 
 			}
 
-			function singleAntennaEvaluation(ifTab, indexAntenna){
+			function singleAntennaEvaluation(ifTab, internalFreqTab, indexAntenna){
 				
 				var scoreAntenna = 0;
 
 				for (var i = 0; i < nbantennas; i++){
-					if(i != indexAntenna && ifTab[indexAntenna][i] == true){
+					if(i != indexAntenna && ifTab[indexAntenna][i] == true && internalFreqTab[i] == internalFreqTab[indexAntenna]){
 						scoreAntenna++;
 					}
 				}
