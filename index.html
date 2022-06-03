@@ -1625,7 +1625,7 @@
 						var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
 						fakerFreqTab.push(possibleFreq);
 						//2) check that the possibleFreq is not NOK
-						var scoreAntennasTab = assignementEvaluation(ifTab,fakerFreqTab);//TODO TO CHECK
+						var scoreAntennasTab = assignementEvaluation(ifTab,fakerFreqTab);
 						var scoreAntennas=scoreAntennasTab.reduce((x,y)=>x+y);
 						//3)check the score + act in consequences
 						if(scoreAntennas<=0){			
