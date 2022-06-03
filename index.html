@@ -1551,6 +1551,7 @@
 				
 				//first randomAssignment
 				randomAssignment();
+				//smartAssignment(ifTab);
 				scoreAntennas = assignementEvaluation(ifTab);
 
 				// console.log(ifTab);
@@ -1612,23 +1613,28 @@
 			*
 			*Smart Assignment 
 			*/
-			function smartAssignment(){
+			function smartAssignment(ifTab){
 				//assigner les freqs une à une et à chaque fois, vérifier que la fréquence n'est pas en  interférences avec autres
 				var antenne_1;
 				for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
 					var nokFreq=true;
+					//smart assignment loop
 					while(nokFreq){
 					//TODO Assigner une freq qui est OK
 						//0)choisir une freq
-						var possibleFreq = freqTab.push(Math.floor(Math.random() * freqRange) + 1);
+						var possibleFreq = (Math.floor(Math.random() * freqRange) + 1);
 						//1)Créer un fakerFreqTab pour evaluer avec la fonction d'évaluation
-
+						var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
+						fakerFreqTab.push(possibleFreq);
 						//2) vérifier que la freq choisie n'est pas NOK
-						
-						//3)
-					//	if(SI FREQS SONT OK ){nokFreq=false;}
-
-
+						var scoreAntennasTab = assignementEvaluation(ifTab,fakerFreqTab);//TODO TO CHECK
+						var scoreAntennas=scoreAntennasTab.reduce((x,y)=>x+y);
+						//3)check le score + agir en conséquence
+						if(scoreAntennas<=0){			
+							//it's good - update the freqTab with good frequency			
+							freqTab= JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
+							nokFreq=false;
+						}
 					}
 				}
 			}
