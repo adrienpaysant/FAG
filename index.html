@@ -1626,9 +1626,10 @@
 				for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
 					var nokFreq=true;
 					//smart assignment loop
-					while(nokFreq){
+					for(var i =1; i < freqRange && nokFreq ;i++){
 						//0)choose a random freq
-						var possibleFreq = (Math.floor(Math.random() * freqRange) + 1);
+						var possibleFreq = i;
+						console.log(i);//TODO TO REMOVE
 						//1)fake freqTab to evaluate it 
 						var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
 						fakerFreqTab.push(possibleFreq);
@@ -1640,6 +1641,7 @@
 							//so far so good - update the freqTab with good frequency			
 							freqTab= JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
 							nokFreq=false;
+							console.log("freq GOOD");
 						}
 					}
 				}
