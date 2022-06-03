@@ -28,13 +28,12 @@
 	<script src="jquery-3.6.0.js"></script>
 	<script src="https://npmcdn.com/leaflet-geometryutil"></script>
 	<style>
-		<style>
 		html, body, #map-canvas {
 		height: 100%;
 		margin: 0px;
 		padding: 0px
 		}
-		</style>
+	</style>
 	<style type="text/css">
 		body
 		{
@@ -171,6 +170,7 @@
 	//FAG Variables
 	var distanceRange=500;
 	var freqRange=16;
+	var freqTab=[];//tab that contains the frequency for each antenna   [freq ant 0,freq ant 1,freq ant 2,...]
 
 	//END FAG Variables
 
@@ -357,6 +357,10 @@
 				fillOpacity: 1,
 				radius: 2}).addTo(mymap);
 		}
+
+		// TBedez
+		// console.log(antenne);
+
 		antennas.push(antenne);
 		nbantennas++;
 		document.getElementById('message').value = "Choisissez une action !";
@@ -1496,9 +1500,18 @@
 				var slider = document.getElementById("distanceRange");
 				distanceRange=slider.value;
 				document.getElementById("distanceInput").value=distanceRange;
+				console.log('slider\n');
 			}
 			function updateDistanceInput(){
-				var ip = document.getElementById("distanceInput");
+				
+				var internalDistanceRange = document.getElementById("distanceInput").value;
+				
+				if(parseInt(internalDistanceRange) > parseInt(document.getElementById("distanceInput").max)){
+					internalDistanceRange = document.getElementById("distanceInput").max;
+				}
+
+				// internalDistanceRange = document.getElementById("distanceInput").max;
+				/*var ip = document.getElementById("distanceInput");
 				distanceRange=ip.value;
 				max=document.getElementById("distanceInput").max;
 				min=document.getElementById("distanceInput").min;
@@ -1507,9 +1520,9 @@
 				}
 				else if(distanceRange<min){
 					distanceRange=min;
-				}
-				document.getElementById("distanceRange").value=distanceRange;
-				document.getElementById("distanceInput").value=distanceRange;
+				}*/
+				document.getElementById("distanceRange").value=internalDistanceRange;
+				document.getElementById("distanceInput").value=internalDistanceRange;
 			}
 			function updateFreqRangeSlider(){
 				var slider = document.getElementById("freqRange");
@@ -1538,15 +1551,109 @@
 	 		*/
 			function execFAG(){
 				//variable local
-				var a
+				var ifTab;
+				var scoreAntennas;		//tableau contenant le score de chq antenne
 				//fin variable
 				
+				freqTab =[];
+
 				//get the interferance table
-				a = generateTabInterferences();
+				ifTab = generateTabInterferences();
 				
+				//first randomAssignment
+				randomAssignment();
+				scoreAntennas = assignementEvaluation(ifTab, freqTab);
+
+				// console.log(ifTab);
+
+
+				console.log('tableau des frequences:\n');
+				console.log(freqTab);
+				console.log('tableau des scores:\n');
+				console.log(scoreAntennas);
 				
 			}
 			
+			/**
+			*
+			*
+			*
+			*
+			*/
+			function assignementEvaluation(ifTab, internalFreqTab){
+				//TODO
+				var indexAntenna;
+				var scoreAntennas = [];
+
+				for (indexAntenna = 0; indexAntenna < nbantennas; indexAntenna++){
+					scoreAntennas.push(singleAntennaEvaluation(ifTab, internalFreqTab, indexAntenna));
+				}
+
+				return scoreAntennas;
+
+			}
+
+			function singleAntennaEvaluation(ifTab, internalFreqTab, indexAntenna){
+				
+				var scoreAntenna = 0;
+
+				for (var i = 0; i < nbantennas; i++){
+					if(i != indexAntenna && ifTab[indexAntenna][i] == true && internalFreqTab[i] == internalFreqTab[indexAntenna]){
+						scoreAntenna++;
+					}
+				}
+				
+				return scoreAntenna;
+			}
+
+			/**
+			*
+			*Dummy assignment function
+			*only random assignment
+			*
+			*/
+			function randomAssignment(){
+				//itérer sur le nombre d'antennes et mettre les fréquences dans le tableau freqTab
+				var antenne_1;
+				for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
+					freqTab.push(Math.floor(Math.random() * freqRange) + 1);
+					//rand*feqRange => from [0;freqRange[ 
+					//floor => from [0;freqRange-1]
+					//+1 => from [1;freqRange]
+				}
+				//console.log(freqTab);
+			}
+
+			/**
+			*
+			*Smart Assignment 
+			*/
+			function smartAssignment(ifTab){
+				var antenne_1;
+				for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
+					var nokFreq=true;
+					//smart assignment loop
+					while(nokFreq){
+						//0)choose a random freq
+						var possibleFreq = (Math.floor(Math.random() * freqRange) + 1);
+						//1)fake freqTab to evaluate it 
+						var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
+						fakerFreqTab.push(possibleFreq);
+						//2) check that the possibleFreq is not NOK
+						var scoreAntennasTab = assignementEvaluation(ifTab,fakerFreqTab);
+						var scoreAntennas=scoreAntennasTab.reduce((x,y)=>x+y);
+						//3)check the score + act in consequences
+						if(scoreAntennas<=0){			
+							//so far so good - update the freqTab with good frequency			
+							freqTab= JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
+							nokFreq=false;
+						}
+					}
+				}
+				console.log(freqTab);
+			}
+
+
 			/**
 			 * Fonction retournant un tableau à 2 dimension contenant des 1 pour les couples 
 			 * d'antennes qui sont situées à une distance inférieure à celle définie par 
