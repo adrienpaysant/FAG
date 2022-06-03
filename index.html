@@ -1609,12 +1609,11 @@
 		*/
 		function smartAssignment2(ifTab) {
 			var antenne_1;
-			var skipit = false;
 			for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
-				if (!skipit) {
-					var nokFreq = true;
+					
 					//smart assignment loop
 					if (freqRange == 1) {
+						var nokFreq = true;
 						var possibleFreq = 1;
 						var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
 						fakerFreqTab.push(possibleFreq);
@@ -1629,6 +1628,7 @@
 							//console.log("freq GOOD");
 						}
 					} else {
+						var nokFreq = true;
 						for (var i = 1; i < freqRange && nokFreq; i++) {
 							//0)choose a random freq
 							var possibleFreq = i;
@@ -1648,12 +1648,8 @@
 							}
 						}
 					}
-					if (nokFreq) {
-						//notify user that it's impossible to assign.
-						alert("It's impossible to compute data - try to add more frequency.")
-						skipit = true;
-					}
-				}
+					
+				
 			}
 			console.log(freqTab);
 		}
