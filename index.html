@@ -1517,9 +1517,12 @@
 			// console.log(ifTab);
 
 
+
 			console.log('tableau des frequences:\n');
 			console.log(freqTab);
 			console.log('nombres d\'erreurs  : ' + scoreAntennas.reduce((x, y) => (x + y)));
+			
+			window.open("resultsFAG.html?nb="+nbantennas+"&freq="+freqTab);
 
 		}
 
@@ -1596,13 +1599,11 @@
 								//so far so good - update the freqTab with good frequency			
 								freqTab = JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
 								nokFreq = false;
-								//console.log("freq GOOD");
 							}
 						} else {
 							for (var i = 1; i < freqRange && nokFreq; i++) {
 								//0)choose a random freq
 								var possibleFreq = i;
-								//console.log(i);//TODO TO REMOVE
 								//1)fake freqTab to evaluate it 
 								var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
 								fakerFreqTab.push(possibleFreq);
@@ -1614,7 +1615,6 @@
 									//so far so good - update the freqTab with good frequency			
 									freqTab = JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
 									nokFreq = false;
-									//console.log("freq GOOD");
 								}
 							}
 						}
@@ -1625,7 +1625,6 @@
 						}
 					}
 				}
-				console.log(freqTab);
 		}
 
 		/**
@@ -1648,8 +1647,6 @@
 					//2) check that the possibleFreq is not NOK
 					var scoreAntennasTab = assignementEvaluation(ifTab, fakerFreqTab);
 					var scoreAntennas = scoreAntennasTab[antenne];
-					console.log("faker : "+fakerFreqTab);
-					console.log("tic: "+scoreAntennas);
 					//3)check the score + act in consequences
 					if (scoreAntennas <= 0) {
 						//so far so good - update the freqTab with good frequency			
@@ -1658,7 +1655,6 @@
 					}
 				}
 			}
-			console.log(freqTab);
 		}
 
 
