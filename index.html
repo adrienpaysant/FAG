@@ -1483,43 +1483,13 @@
 		//FAG FUNCTIONS
 
 		//SETTINGS
-		function updateDistanceRange() {
-			var slider = document.getElementById("distanceRange");
-			distanceRange = slider.value;
-			document.getElementById("distanceInput").value = distanceRange;
-		}
 		function updateDistanceInput() {
 			var ip = document.getElementById("distanceInput");
 			distanceRange = ip.value;
-			max = document.getElementById("distanceInput").max;
-			min = document.getElementById("distanceInput").min;
-			if (distanceRange > max) {
-				distanceRange = max;
-			}
-			else if (distanceRange < min) {
-				distanceRange = min;
-			}
-			document.getElementById("distanceRange").value = distanceRange;
-			document.getElementById("distanceInput").value = distanceRange;
-		}
-		function updateFreqRangeSlider() {
-			var slider = document.getElementById("freqRange");
-			freqRange = slider.value;
-			document.getElementById("freqInput").value = freqRange;
 		}
 		function updateFreqInput() {
 			var ip = document.getElementById("freqInput");
 			freqRange = ip.value;
-			max = document.getElementById("freqInput").max;
-			min = document.getElementById("freqInput").min;
-			if (freqRange > max) {
-				freqRange = max;
-			}
-			else if (freqRange < min) {
-				freqRange = min;
-			}
-			document.getElementById("freqRange").value = freqRange;
-			document.getElementById("freqInput").value = freqRange;
 		}
 
 		//MAIN FUNCTIONS
@@ -1765,15 +1735,13 @@
 						oninput="updateDistanceInput()">
 					<label id="distanceRangeLabel" style="font-weight: bold;font-style: normal;"> meters</label>
 				</div>
-				<input type="range" min="1" max="5000" value="500" id="distanceRange" oninput="updateDistanceRange()">
 				<!--DO not change base value or change on the var to in js.-->
 
 				<label>Number of frequencies :</label>
 				<div style="display: flex;flex-direction: row;">
-					<input type="number" id="freqInput" max="100" min="1" value="16" oninput="updateFreqInput()">
+					<input type="number" id="freqInput" max="100" min="1" step="1" value="16" oninput="updateFreqInput()">
 					<label id="freqRangeLabel" style="font-weight: bold;font-style: normal;"> frequencies</label>
 				</div>
-				<input type="range" min="1" max="100" value="16" id="freqRange" oninput="updateFreqRangeSlider()">
 				<!--DO not change base value or change on the var to in js.-->
 			</div>
 			<!--END OF FAG SETTINGS-->
