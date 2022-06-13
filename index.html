@@ -1508,12 +1508,14 @@
 			//get the interferance table
 			ifTab = generateTabInterferences();
 
-			//first randomAssignment
-			//randomAssignment();
+			//assignation of frequencies
 			var isAssignOk = smartAssignment(ifTab);
 			scoreAntennas = assignementEvaluation(ifTab, freqTab);
 
-			if (!isAssignOk) { betterAsNoAssignment(scoreAntennas, ifTab, freqTab); }
+			if (!isAssignOk) {
+				randomAssignment(); 
+				betterAsNoAssignment(scoreAntennas, ifTab, freqTab);
+			}
 
 			//debug
 			console.log('tableau des frequences:\n');
@@ -1606,6 +1608,7 @@
 		*/
 		function randomAssignment() {
 			//itérer sur le nombre d'antennes et mettre les fréquences dans le tableau freqTab
+			freqTab=[];
 			var antenne_1;
 			for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
 				freqTab.push(Math.floor(Math.random() * freqRange) + 1);
