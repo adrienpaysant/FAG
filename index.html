@@ -1494,15 +1494,14 @@
 
 		//MAIN FUNCTIONS
 		/**
-			* Fonction appelée par l'appuie sur le bouton correspondant a notre projet dans la bar du bas de l'app
-		* permettant le calcul de la meilleur répartition des fréquences disponibles
-			*/
+		* FAG Project execution function
+		*/
 		function execFAG() {
-			//variable local
+			//loacal vars
 			var ifTab;
-			var scoreAntennas;		//tableau contenant le score de chq antenne
-			//fin variable
+			var scoreAntennas;		//array containing the score for each antenna
 
+			//freqTab reset
 			freqTab = [];
 
 			//get the interferance table
@@ -1520,24 +1519,25 @@
 			}
 
 			//debug
-			console.log('tableau des frequences:\n');
+			console.log('Frequencies Tab:\n');
 			console.log(freqTab);
-			console.log('nombres d\'erreurs  : ' + scoreAntennas.reduce((x, y) => (x + y)));
+			console.log('errors number  : ' + scoreAntennas.reduce((x, y) => (x + y)));
 
 
 			//results displaying
 			window.open("resultsFAG.html?nb=" + nbantennas + "&freq=" + freqTab+"&nbInt="+scoreAntennas.reduce((x, y) => (x + y))/2);
 		}
 
+		/**
+		* Trying to have a nice solution - not perfect but not bad at all
+		* Used when smartasign is not possible
+		*/
 		function betterAsNoAssignment(scoreAntennas, ifTab, internalFreqTab) {
 
 			var iteration = 0;
 			var indexWorstAntenna;
-
 			while (iteration < 100) {
-
 				iteration++;
-
 				indexWorstAntenna = scoreAntennas.indexOf(Math.max(...scoreAntennas));
 				var fakerFreqTab = JSON.parse(JSON.stringify(freqTab));
 				fakerFreqTab[indexWorstAntenna] = Math.floor(Math.random() * freqRange) + 1;
@@ -1557,7 +1557,7 @@
 		/**
 		*
 		*Assignement function evaluation 
-		*returns a tab with scores for antennas. score=1 means 1 error
+		*returns an array with scores for antennas. score=1 means 1 error
 		*
 		*/
 		function assignementEvaluation(ifTab, internalFreqTab) {
@@ -1605,7 +1605,8 @@
 
 		/**
 		*
-		*Smart Assignment
+		* Smart Assignment
+		* Assigns only allowed freq - it's possible to fail
 		*/
 		function smartAssignment(ifTab) {
 			var antenne;
@@ -1656,22 +1657,21 @@
 		}
 
 		/**
-		 * Fonction retournant un tableau à 2 dimension contenant des 1 pour les couples 
-		 * d'antennes qui sont situées à une distance inférieure à celle définie par 
-		 * l'utilisateur
+		 * Function that returns a 2 dim array containing 1 for antennas couples that are
+		 * in a interfering location.
 		 * 
 		 * ex: tab_interference[0,1]
 		 */
 		function generateTabInterferences() {
 			var antenne_1, antenne_2;
 
-			//création du tableau a 2 dimensions
+			//creating the 2D array
 			var tab_interference = new Array(nbantennas);
 			for (var i = 0; i < nbantennas; i++) {
 				tab_interference[i] = new Array(nbantennas);
 			}
 
-			//on test pour chaque couple d'antenne et on place la bonne valeure dans le tableau
+			//test for eahc antennas couple et insert the according value in the array
 			for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
 				for (antenne_2 = 0; antenne_2 < nbantennas; antenne_2++) {
 					if (distance(antennas[antenne_1].location, antennas[antenne_2].location) < distanceRange) {
@@ -1691,15 +1691,14 @@
 
 		//OTHER/Tools
 		/**
-		 * Fonction permettant le calcul de la distance entre deux point en m 
-		 * en se basant sur leurs coordonnées en degré décimal
+		 * Function that calculate the distance between two points - based on decimal degre coordinates
 		 */
 		function distance(position1, position2) {
 			return Math.acos(Math.sin(degreeToRadian(position1.lat)) * Math.sin(degreeToRadian(position2.lat)) + Math.cos(degreeToRadian(position1.lat)) * Math.cos(degreeToRadian(position2.lat)) * Math.cos(degreeToRadian(position1.lng) - degreeToRadian(position2.lng))) * 6371000;
 		}
 
 		/**
-		 * Fonction permettant de convertir un angle en degrés en radians
+		 * Function that converts an angle from degres to radians
 		 */
 		function degreeToRadian(angleInDeg) {
 			return angleInDeg * (Math.PI / 180);
