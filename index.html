@@ -1510,6 +1510,7 @@
 
 			//assignation of frequencies
 			var isAssignOk = smartAssignment(ifTab);
+			console.log(isAssignOk + 'var ok caca');
 			scoreAntennas = assignementEvaluation(ifTab, freqTab);
 
 			if (!isAssignOk) {
@@ -1530,25 +1531,19 @@
 		}
 
 		function betterAsNoAssignment(scoreAntennas, ifTab, internalFreqTab) {
-			/*console.log(Math.max(scoreAntennas[0], scoreAntennas[1], scoreAntennas[2]));
-			console.log(Math.max(...scoreAntennas));
-			console.log(scoreAntennas.indexOf(Math.max(...scoreAntennas)));*/
+
 			if (nbantennas < freqRange) {
 				for (var i = 0; i < nbantennas; i++) {
 					freqTab[i] = i;
 				}
 			} else {
 				var iteration = 0;
-				var timeoutID;
-				var isTimeout = false;
 				var indexWorstAntenna;
-				// timeoutID = window.setTimeout(isTimeout = true, 2000);
-				console.log('helloooo, isTimeout = ' + isTimeout);
+
 				while (iteration < 100) {
-					// for(var i = 0; i < 100; i++){
+					
 					iteration++;
-					/*console.log(Math.max(...scoreAntennas));
-					console.log(scoreAntennas.indexOf(Math.max(...scoreAntennas)));*/
+					
 					indexWorstAntenna = scoreAntennas.indexOf(Math.max(...scoreAntennas));
 					var fakerFreqTab = JSON.parse(JSON.stringify(freqTab));
 					fakerFreqTab[indexWorstAntenna] = Math.floor(Math.random() * freqRange) + 1;
@@ -1556,18 +1551,19 @@
 					var newScoreAntennas = newScoreAntennasTab.reduce((x, y) => x + y);
 					var previousScoreAntennasTab = assignementEvaluation(ifTab, freqTab);
 					var previousScoreAntennas = previousScoreAntennasTab.reduce((x, y) => x + y);
-					console.log('hello' + iteration + ', score previous = ' + previousScoreAntennas + ', score nouveau = ' + newScoreAntennas);
+
+					// console.log('hello' + iteration + ', score previous = ' + previousScoreAntennas + ', score nouveau = ' + newScoreAntennas);
+
 					if (newScoreAntennas <= previousScoreAntennas) {
 						freqTab[indexWorstAntenna] = fakerFreqTab[indexWorstAntenna];
-						console.log('score meilleur');
+						// console.log('score meilleur');
 					}
-					console.log('iteration n°' + iteration);
+					// console.log('iteration n°' + iteration);
 					if (iteration == 100) {
 						isTimeout = true;
-						console.log('iteration max');
+						// console.log('iteration max');
 					}
 				}
-				alert('ca a fonctionne, score = ' + scoreAntennas + ', iteration n°' + iteration);
 			}
 		}
 
