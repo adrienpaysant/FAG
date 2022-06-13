@@ -1510,30 +1510,70 @@
 
 			//first randomAssignment
 			//randomAssignment();
-			//smartAssignment(ifTab);
-			smartAssignment2(ifTab);
+			var isAssignOk = smartAssignment(ifTab);
 			scoreAntennas = assignementEvaluation(ifTab, freqTab);
 
-			// console.log(ifTab);
+			if (!isAssignOk) { betterAsNoAssignment(scoreAntennas, ifTab, freqTab); }
 
-
-
+			//debug
 			console.log('tableau des frequences:\n');
 			console.log(freqTab);
 			console.log('nombres d\'erreurs  : ' + scoreAntennas.reduce((x, y) => (x + y)));
-			
-			window.open("resultsFAG.html?nb="+nbantennas+"&freq="+freqTab);
 
+
+			//results displaying
+			window.open("resultsFAG.html?nb=" + nbantennas + "&freq=" + freqTab);
+		}
+
+		function betterAsNoAssignment(scoreAntennas, ifTab, internalFreqTab) {
+			/*console.log(Math.max(scoreAntennas[0], scoreAntennas[1], scoreAntennas[2]));
+			console.log(Math.max(...scoreAntennas));
+			console.log(scoreAntennas.indexOf(Math.max(...scoreAntennas)));*/
+			if (nbantennas < freqRange) {
+				for (var i = 0; i < nbantennas; i++) {
+					freqTab[i] = i;
+				}
+			} else {
+				var iteration = 0;
+				var timeoutID;
+				var isTimeout = false;
+				var indexWorstAntenna;
+				// timeoutID = window.setTimeout(isTimeout = true, 2000);
+				console.log('helloooo, isTimeout = ' + isTimeout);
+				while (iteration < 100) {
+					// for(var i = 0; i < 100; i++){
+					iteration++;
+					/*console.log(Math.max(...scoreAntennas));
+					console.log(scoreAntennas.indexOf(Math.max(...scoreAntennas)));*/
+					indexWorstAntenna = scoreAntennas.indexOf(Math.max(...scoreAntennas));
+					var fakerFreqTab = JSON.parse(JSON.stringify(freqTab));
+					fakerFreqTab[indexWorstAntenna] = Math.floor(Math.random() * freqRange) + 1;
+					var newScoreAntennasTab = assignementEvaluation(ifTab, fakerFreqTab);
+					var newScoreAntennas = newScoreAntennasTab.reduce((x, y) => x + y);
+					var previousScoreAntennasTab = assignementEvaluation(ifTab, freqTab);
+					var previousScoreAntennas = previousScoreAntennasTab.reduce((x, y) => x + y);
+					console.log('hello' + iteration + ', score previous = ' + previousScoreAntennas + ', score nouveau = ' + newScoreAntennas);
+					if (newScoreAntennas <= previousScoreAntennas) {
+						freqTab[indexWorstAntenna] = fakerFreqTab[indexWorstAntenna];
+						console.log('score meilleur');
+					}
+					console.log('iteration n°' + iteration);
+					if (iteration == 100) {
+						isTimeout = true;
+						console.log('iteration max');
+					}
+				}
+				alert('ca a fonctionne, score = ' + scoreAntennas + ', iteration n°' + iteration);
+			}
 		}
 
 		/**
 		*
-		*
-		*
+		*Assignement function evaluation 
+		*returns a tab with scores for antennas. score=1 means 1 error
 		*
 		*/
 		function assignementEvaluation(ifTab, internalFreqTab) {
-			//TODO
 			var indexAntenna;
 			var scoreAntennas = [];
 
@@ -1578,17 +1618,33 @@
 
 		/**
 		*
-		*Smart Assignment 2.0
+		*Smart Assignment
 		*/
-		function smartAssignment2(ifTab) {
-				var antenne;
-				var skipit = false;
-				for (antenne = 0; antenne < nbantennas; antenne++) {
-					if (!skipit) {
-						var nokFreq = true;
-						//smart assignment loop
-						if (freqRange == 1) {
-							var possibleFreq = 1;
+		function smartAssignment(ifTab) {
+			var antenne;
+			var skipit = false;
+			for (antenne = 0; antenne < nbantennas; antenne++) {
+				if (!skipit) {
+					var nokFreq = true;
+					//smart assignment loop
+					if (freqRange == 1) {
+						var possibleFreq = 1;
+						var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
+						fakerFreqTab.push(possibleFreq);
+						//2) check that the possibleFreq is not NOK
+						var scoreAntennasTab = assignementEvaluation(ifTab, fakerFreqTab);
+						var scoreAntennas = scoreAntennasTab[antenne];
+						//3)check the score + act in consequences
+						if (scoreAntennas <= 0) {
+							//so far so good - update the freqTab with good frequency			
+							freqTab = JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
+							nokFreq = false;
+						}
+					} else {
+						for (var i = 1; i < freqRange && nokFreq; i++) {
+							//0)choose a random freq
+							var possibleFreq = i;
+							//1)fake freqTab to evaluate it 
 							var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
 							fakerFreqTab.push(possibleFreq);
 							//2) check that the possibleFreq is not NOK
@@ -1600,63 +1656,17 @@
 								freqTab = JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
 								nokFreq = false;
 							}
-						} else {
-							for (var i = 1; i < freqRange && nokFreq; i++) {
-								//0)choose a random freq
-								var possibleFreq = i;
-								//1)fake freqTab to evaluate it 
-								var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
-								fakerFreqTab.push(possibleFreq);
-								//2) check that the possibleFreq is not NOK
-								var scoreAntennasTab = assignementEvaluation(ifTab, fakerFreqTab);
-								var scoreAntennas = scoreAntennasTab[antenne];
-								//3)check the score + act in consequences
-								if (scoreAntennas <= 0) {
-									//so far so good - update the freqTab with good frequency			
-									freqTab = JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
-									nokFreq = false;
-								}
-							}
-						}
-						if (nokFreq) {
-							//notify user that it's impossible to assign.
-							alert("It's impossible to compute data - try to add more frequency.")
-							skipit = true;
 						}
 					}
-				}
-		}
-
-		/**
-		*
-		*Smart Assignment 
-		* Caution ! there is no error's management
-		*/
-		function smartAssignment(ifTab) {
-			var antenne;
-			for (antenne = 0; antenne < nbantennas; antenne++) {
-				var nokFreq = true;
-				//smart assignment loop
-				while (nokFreq) {
-					
-					//0)choose a random freq
-					var possibleFreq = (Math.floor(Math.random() * freqRange) + 1);
-					//1)fake freqTab to evaluate it 
-					var fakerFreqTab = JSON.parse(JSON.stringify(freqTab)); //deep copy
-					fakerFreqTab.push(possibleFreq);
-					//2) check that the possibleFreq is not NOK
-					var scoreAntennasTab = assignementEvaluation(ifTab, fakerFreqTab);
-					var scoreAntennas = scoreAntennasTab[antenne];
-					//3)check the score + act in consequences
-					if (scoreAntennas <= 0) {
-						//so far so good - update the freqTab with good frequency			
-						freqTab = JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
-						nokFreq = false;
+					if (nokFreq) {
+						//notify user that it's impossible to assign.
+						//alert("It's impossible to compute data - try to add more frequency.")
+						skipit = true;
 					}
 				}
 			}
+			return skipit ? false : true;
 		}
-
 
 		/**
 		 * Fonction retournant un tableau à 2 dimension contenant des 1 pour les couples 
@@ -1735,7 +1745,8 @@
 
 				<label>Number of frequencies :</label>
 				<div style="display: flex;flex-direction: row;">
-					<input type="number" id="freqInput" max="100" min="1" step="1" value="16" oninput="updateFreqInput()">
+					<input type="number" id="freqInput" max="100" min="1" step="1" value="16"
+						oninput="updateFreqInput()">
 					<label id="freqRangeLabel" style="font-weight: bold;font-style: normal;"> frequencies</label>
 				</div>
 				<!--DO not change base value or change on the var to in js.-->
