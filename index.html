@@ -1639,7 +1639,7 @@
 						var scoreAntennasTab = assignementEvaluation(ifTab, fakerFreqTab);
 						var scoreAntennas = scoreAntennasTab[antenne];
 						//3)check the score + act in consequences
-						if (scoreAntennas <= 0) {
+						if (scoreAntennas <= 1) {
 							//so far so good - update the freqTab with good frequency			
 							freqTab = JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
 							nokFreq = false;
@@ -1655,7 +1655,7 @@
 							var scoreAntennasTab = assignementEvaluation(ifTab, fakerFreqTab);
 							var scoreAntennas = scoreAntennasTab[antenne];
 							//3)check the score + act in consequences
-							if (scoreAntennas <= 0) {
+							if (scoreAntennas <= 1) {
 								//so far so good - update the freqTab with good frequency			
 								freqTab = JSON.parse(JSON.stringify(fakerFreqTab));//deep copy
 								nokFreq = false;
