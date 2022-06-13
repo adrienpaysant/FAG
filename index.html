@@ -1513,6 +1513,8 @@
 			scoreAntennas = assignementEvaluation(ifTab, freqTab);
 
 			if (!isAssignOk) {
+				
+				freqTab = [];
 				randomAssignment(); 
 				betterAsNoAssignment(scoreAntennas, ifTab, freqTab);
 			}
@@ -1608,7 +1610,6 @@
 		*/
 		function randomAssignment() {
 			//itérer sur le nombre d'antennes et mettre les fréquences dans le tableau freqTab
-			freqTab=[];
 			var antenne_1;
 			for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
 				freqTab.push(Math.floor(Math.random() * freqRange) + 1);
