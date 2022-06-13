@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frequencies Assignment Results</title>
     <!-- CSS Code: Place this code in the document's head (between the 'head' tags) -->
-    <style>
+    <style>    
         table.GeneratedTable {
             width: 100%;
             background-color: #676f98;
@@ -34,7 +34,7 @@
     </style>
 </head>
 
-<body>
+<body style=" font-family:Calibri, sans-serif;">
     <div>
         <p style="text-align: center;">
             FAG Project - RI53 Radio Networks - UTBM P22 - Y.El Aroui, J.Lamy, T.Bedez, A.Paysant
@@ -80,8 +80,11 @@
             tBody.appendChild(row);
         }
 
-        if(nbInt>0){
-            document.getElementById("interfercenceLab").innerText  = "There is "+nbInt+" interference(s).\n You could try other settings.";
+        if(nbInt>0 && nbInt<2){
+            document.getElementById("interfercenceLab").innerText  = "There is "+nbInt+" interference.\n You could try other settings.";
+        }else if (nbInt>=2){
+            document.getElementById("interfercenceLab").innerText  = "There are "+nbInt+" interferences.\n You could try other settings.";
+            
         }
 
     </script>
