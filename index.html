@@ -1526,7 +1526,7 @@
 
 
 			//results displaying
-			window.open("resultsFAG.html?nb=" + nbantennas + "&freq=" + freqTab);
+			window.open("resultsFAG.html?nb=" + nbantennas + "&freq=" + freqTab+"&nbInt"+scoreAntennas.reduce((x, y) => (x + y))/2);
 		}
 
 		function betterAsNoAssignment(scoreAntennas, ifTab, internalFreqTab) {
