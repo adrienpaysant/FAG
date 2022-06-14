@@ -1500,18 +1500,14 @@
 			//loacal vars
 			var ifTab;
 			var scoreAntennas;		//array containing the score for each antenna
-
 			//freqTab reset
 			freqTab = [];
-
 			//get the interferance table
 			ifTab = generateTabInterferences();
-
 			//assignation of frequencies
 			var isAssignOk = smartAssignment(ifTab);
 			console.log('utilisation smart assign: ' + isAssignOk);
 			scoreAntennas = assignementEvaluation(ifTab, freqTab);
-
 			if (!isAssignOk) {
 				freqTab = [];
 				randomAssignment(); 
@@ -1522,8 +1518,6 @@
 			console.log('Frequencies Tab:\n');
 			console.log(freqTab);
 			console.log('errors number  : ' + scoreAntennas.reduce((x, y) => (x + y)));
-
-
 			//results displaying
 			window.open("resultsFAG.html?nb=" + nbantennas + "&freq=" + freqTab+"&nbInt="+scoreAntennas.reduce((x, y) => (x + y))/2);
 		}
@@ -1549,9 +1543,7 @@
 				if (newScoreAntennas <= previousScoreAntennas) {
 					freqTab[indexWorstAntenna] = fakerFreqTab[indexWorstAntenna];
 				}
-				
 			}
-			
 		}
 
 		/**
@@ -1592,7 +1584,6 @@
 		*
 		*/
 		function randomAssignment() {
-			//itérer sur le nombre d'antennes et mettre les fréquences dans le tableau freqTab
 			var antenne_1;
 			for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
 				freqTab.push(Math.floor(Math.random() * freqRange) + 1);
