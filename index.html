@@ -1671,7 +1671,7 @@
 				tab_interference[i] = new Array(nbantennas);
 			}
 
-			//test for eahc antennas couple et insert the according value in the array
+			//test for each antennas couple et insert the according value in the array
 			for (antenne_1 = 0; antenne_1 < nbantennas; antenne_1++) {
 				for (antenne_2 = 0; antenne_2 < nbantennas; antenne_2++) {
 					if (distance(antennas[antenne_1].location, antennas[antenne_2].location) < distanceRange) {
@@ -1680,7 +1680,6 @@
 					} else {
 						tab_interference[antenne_1][antenne_2] = false;
 					}
-					//alert(antenne_1 + " <-> " + antenne_2 + " distance = " + distance(antennas[antenne_1].location, antennas[antenne_2].location) +  "m on note : " + tab_interference[antenne_1][antenne_2]);
 				}
 			}
 
