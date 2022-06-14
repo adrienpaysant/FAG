@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +16,6 @@
             border-style: solid;
             color: #ffffff;
         }
-
         table.GeneratedTable td,
         table.GeneratedTable th {
             border-width: 4px;
@@ -33,7 +30,6 @@
         }
     </style>
 </head>
-
 <body style=" font-family:Calibri, sans-serif;">
     <div>
         <p style="text-align: center;">
@@ -41,7 +37,6 @@
         </p>
     </div>
     <hr>
-    <!-- HTML Code: Place this code in the document's body (between the 'body' tags) where the table should appear -->
     <table class="GeneratedTable" id="tab">
         <thead>
             <tr>
@@ -55,7 +50,6 @@
     <div style="display:flex ; flex-direction: row; justify-content: center;">
     <label id="interfercenceLab" style="text-align: center;"></label>
 </div>
-    <!-- Codes by Quackit.com -->
     <script type="text/javascript">
         var url = new URL(document.location.href);
         var nbantennas = url.searchParams.get("nb");
@@ -67,7 +61,6 @@
         var tBody = document.getElementById("tbody");
         //generate the tab : 
         for (var i = 0; i < nbantennas; i++) {
-
             var row = document.createElement("tr");
             var cell1 = document.createElement("td");
             var cellText1 = document.createTextNode("#"+(i+1));
@@ -79,16 +72,12 @@
             row.appendChild(cell2);
             tBody.appendChild(row);
         }
-
         if(nbInt>0 && nbInt<2){
             document.getElementById("interfercenceLab").innerText  = "There is "+nbInt+" interference.\n You could try other settings.";
         }else if (nbInt>=2){
-            document.getElementById("interfercenceLab").innerText  = "There are "+nbInt+" interferences.\n You could try other settings.";
-            
+            document.getElementById("interfercenceLab").innerText  = "There are "+nbInt+" interferences.\n You could try other settings.";   
         }
-
     </script>
-   
 </body>
-
 </html>
+
